@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Auditorias Reportes</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="scripts.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <h1>Auditorias Reportes</h1>
+    </header>
+
+    <form class="captura">
+        <span class="label flat">Código</span> <input type="number" min="1" name="" id="txt_codigo" class="flat flat-border">
+        <span class="label flat">Descripción</span> <input type="text" name="" id="txt_descripcion" class="flat flat-border">
+        <span class="label flat">Precio</span> <input type="number" step="any" min="0" name="" id="txt_precio" class="flat flat-border" placeholder="0">
+        <span class="label flat">Cantidad</span> <input type="number" min="1" name="" id="txt_cantidad" class="flat flat-border">
+        <button class="flat flat-fill" id="btn-agregar" type="submit">Agregar</button>
+    </form>
+
+    <div class="items flat-border">
+        <span class="column-name">Código</span>
+        <span class="column-name">Descripción</span>
+        <span class="column-name">Precio</span>
+        <span class="column-name">Cantidad</span>
+        
+        
+    </div>
+
+
+</body>
+
+</html>
