@@ -1,53 +1,83 @@
+//chrome.exe --user-data-dir="C:/Chrome dev session" --disable-web-security
 $(document).ready(() => {
-    var _codigo = 1;
+    var urlBase = "http://grupodicas.com.mx/api/";
 
-    $("#txt_codigo").val(_codigo);
-    $("#txt_descripcion").attr("placeholder", "Nombre o descripción del artículo")
-    $("#txt_precio").attr("placeholder", 0)
-    $("#txt_cantidad").attr("placeholder", 1)
+    init();
+    function init() {
+        getToken();
+        // getAuditorias("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NzY0NDgwNjMsImNpZCI6IjNiYzUwMmVmNWY3NjkzODRiOTA1ZDg0ODEyNjViYTUwOTc0Zjk5OGIiLCJkYXRhIjp7InVzZXJuYW1lIjoiZ2dvbnphbGV6IiwiaWQiOjE3fX0.Ep1Odfn33PCMrWWpl0ZcmTMUJQIV-D38rnVThNxsdNA");
+    }
 
-    $(".captura").submit(function (e) { 
-        e.preventDefault();
-        
-        let codigo = $("#txt_codigo").val();
-        let descripcion = $("#txt_descripcion").val();
-        let precio = $("#txt_precio").val() ? $("#txt_precio").val() : $("#txt_precio").attr("placeholder");
-        let cantidad = $("#txt_cantidad").val() ? $("#txt_cantidad").val() : $("#txt_cantidad").attr("placeholder");
-        
-        if(descripcion == "") {
-            alert("Ingresa al menos una descripción");
-            return;
-        }
+    function getToken() {
+        let urlPath = "auth";
 
-        addRow(
-            codigo,
-            descripcion,
-            precio,
-            cantidad
-        )
-        
-        $("#txt_codigo").val( (i, origText) => {
-            _codigo = origText;
-            codigo++;
-            return codigo;
-        })
-        $("#txt_descripcion").val("");
-        $("#txt_precio").val("");
-        $("#txt_cantidad").val("");
+        $.getJSON(urlBase + urlPath, { "user": "ggonzalez", "passwd": "Chuck.Norris.19" },
+            function (data, textStatus, jqXHR) {
+                getAuditoriaActivos(data.token, 67);
+                // console.log(data.token);
+            }
+        );
 
-        $("#txt_descripcion").focus();
-    });
+    }
 
-    function sheetItem(text) {
+    function getAuditorias(token) {
+        let urlPath = "auditorias";
+
+        $.getJSON(urlBase + urlPath, { "token": token, "page_size": "10000" },
+            function (data, textStatus, jqXHR) {
+                console.log(data.list);
+                for (let row of data.list) {
+                    agregarFilaActivos(
+                        row.id,
+                        row.descripcion,
+                        row.status,
+                        row.empresa
+                    )
+                }
+            }
+        );
+    }
+
+    function getAuditoriaActivos(token, idAuditoria) {
+        let urlPath = "activos";
+
+        $.getJSON(urlBase + urlPath, {
+            "token": token,
+            "page_size": "10000",
+            "auditoria_actual": idAuditoria
+        },
+            function (data, textStatus, jqXHR) {
+                console.log(data.list);
+
+                for (let row of data.list) {
+                    agregarFilaActivos(
+                        row.idActivoFijo,
+                        row.descripcion,
+                        row.existencia_guardada,
+                        row.existencia_actual
+                    )
+                }
+
+
+            }
+        );
+    }
+
+
+
+
+
+
+    function tablaCelda(text) {
         return $("<span></span>").text(text).attr("class", "item")
     }
 
-    function addRow(codigo, descripcion, precio, cantidad) {
+    function agregarFilaActivos(id, description, existencia_anterior, existencia_actual) {
         $(".items").append(
-            sheetItem(codigo),
-            sheetItem(descripcion),
-            sheetItem("$"+precio),
-            sheetItem(cantidad)
+            tablaCelda(id),
+            tablaCelda(description),
+            tablaCelda(existencia_anterior),
+            tablaCelda(existencia_actual)
         );
     }
 
