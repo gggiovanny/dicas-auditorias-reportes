@@ -1,30 +1,24 @@
 //chrome.exe --user-data-dir="C:/Chrome dev session" --disable-web-security
 $(document).ready(() => {
     var urlBase = "http://grupodicas.com.mx/api/";
-    var ID_AUDITORIA = 42;
     var TOKEN = "";
 
-    init();
-    function init() {
+    $(".dropdown-item").click(function (e) { 
+        e.preventDefault();
+        let idAuditoria = $(this).text();
+        console.log(idAuditoria);
+        init(idAuditoria);     
+    });   
+
+
+    function init(idAuditoria) {
         TOKEN = getUrlParameter("token");        
-        getAuditoria(TOKEN);
-        getAuditoriaActivos(TOKEN, ID_AUDITORIA);
+        getAuditoria(TOKEN, idAuditoria);
+        getAuditoriaActivos(TOKEN, idAuditoria);
     }
 
-    // function getToken() {
-    //     let urlPath = "auth";
-
-    //     $.getJSON(urlBase + urlPath, { "user": "ggonzalez", "passwd": "Chuck.Norris.19" },
-    //         function (data, textStatus, jqXHR) {
-    //             getAuditoriaActivos(data.token, ID_AUDITORIA);
-    //             getAuditoria(data.token);
-    //         }
-    //     );
-
-    // }
-
-    function getAuditoria(token) {
-        let urlPath = "auditorias/"+ID_AUDITORIA;
+    function getAuditoria(token, idAuditoria) {
+        let urlPath = "auditorias/"+idAuditoria;
 
         $.getJSON(urlBase + urlPath, { "token": token, "page_size": "10000" },
             function (data, textStatus, jqXHR) {
