@@ -1,6 +1,7 @@
 $(document).ready(function () {
     var urlBase = "http://grupodicas.com.mx/api/";
     var host = "http://127.0.0.1:5500/"
+    //var host = "http://grupodicas.com.mx/activosfijos/auditoriasreportes/"
 
 
     $("#frmLogin").submit(function (e) { 
