@@ -24,7 +24,7 @@ $(document).ready(function () {
                 $("#login_status").show();
 
                 if(data.status == "ok") {
-                    window.open(host+"reporte/?token="+data.token);
+                    window.open(host+"reporte/?token="+data.token, "_self");
                 }
             }
         );
